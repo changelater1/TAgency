@@ -17,10 +17,14 @@
   </div>
 <% end %>
     <%= yield %>
-    <% if session[:user_id] %>
+    <%
+=begin%>
+ <% if session[:user_id] %>
       <%= link_to 'Выйти', logout_path, method: :delete %>
     <% else %>
       <%= link_to 'Войти через Google', '/auth/google_oauth2' %>
-    <% end %>
+    <% end %> 
+<%
+=end%>
   </body>
 </html>

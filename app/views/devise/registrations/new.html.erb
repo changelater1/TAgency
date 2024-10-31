@@ -1,0 +1,73 @@
+
+ <%
+=begin%>
+ <h2>Sign up</h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %>
+    <% if @minimum_password_length %>
+    <em>(<%= @minimum_password_length %> characters minimum)</em>
+    <% end %><br />
+    <%= f.password_field :password, autocomplete: "new-password" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Sign up" %>
+  </div>
+<% end %>
+
+<%= render "devise/shared/links" %>  
+<%
+=end%>
+
+
+ <main class="form-signin w-100 m-auto">
+  <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="col-md-4">
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <img class="mb-4" src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+        <h1 class="h3 mb-3 fw-normal">Sign up</h1>
+
+        <div class="form-floating">
+          <%= f.email_field :email, class: "form-control", id: "floatingInputEmail", placeholder: "name@example.com" %>
+          <%= f.label :email, "Email address", for: "floatingInputEmail" %>
+        </div>
+
+        <div class="form-floating">
+          <%= f.password_field :password, class: "form-control", id: "floatingPassword", placeholder: "Password" %>
+          <%= f.label :password, "Password", for: "floatingPassword" %>
+        </div>
+
+        <div class="form-floating">
+          <%= f.password_field :password_confirmation, class: "form-control", id: "floatingPasswordConfirmation", placeholder: "Confirm password" %>
+          <%= f.label :password_confirmation, "Confirm password", for: "floatingPasswordConfirmation" %>
+        </div>
+
+        <%= f.submit "Sign up", class: "btn btn-primary w-100 py-2" %>
+
+        
+      <% end %>
+
+      <!-- Google Sign In Button -->
+  <%- resource_class.omniauth_providers.each do |provider| %>
+    <%= button_to "Sign in with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider), data: { turbo: false } %><br />
+  <% end %>
+      </div>
+      <p class="mt-5 mb-3 text-body-secondary">© 2024</p>
+    </div>
+  </div>
+</main> 
+
