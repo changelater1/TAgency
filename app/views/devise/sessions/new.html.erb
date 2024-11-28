@@ -1,5 +1,6 @@
 <%
 =begin%>
+ 
  <!doctype html>
 <html lang="en" data-bs-theme="auto">
   <head>
@@ -50,10 +51,13 @@
 </main>
 
   </body>
-</html> 
+</html>  
 <%
 =end%>
 
+
+
+ 
 
  <%
 =begin%>
@@ -80,17 +84,20 @@
   <div class="actions">
     <%= f.submit "Log in" %>
   </div>
-<% end %> 
-
-
-<%= render "devise/shared/links" %> 
+  <%= render "devise/shared/links" %> 
+<% end %>   
 <%
 =end%>
-<main class="form-signin w-100 m-auto">
+
+
+
+
+
+
+ <main class="form-signin w-100 m-auto">
   <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
     <div class="col-md-4">
-      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-        <img class="mb-4" src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
         <div class="form-floating">
@@ -110,9 +117,11 @@
         </div>
 
         <%= f.submit "Sign in", class: "btn btn-primary w-100 py-2" %>
-
-        <p class="mt-5 mb-3 text-body-secondary">© 2024</p>
+      <% end %>
+      <%= button_to omniauth_authorize_path(:user, :google_oauth2), method: :post, data: { turbo: false }, class: "btn btn-light border d-flex align-items-center my-2" do %>
+          <%= image_tag "png-transparent-google-logo-google-text-trademark-logo-thumbnail.png", alt: "Google logo", class: "me-2", width: 20, height: 20 %>
+          Sign in with Google
       <% end %>
     </div>
   </div>
-</main>
+</main> 

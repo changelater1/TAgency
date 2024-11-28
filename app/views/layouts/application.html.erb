@@ -11,20 +11,19 @@
   </head>
 
   <body>
-  <% flash.each do |type, msg| %>
-  <div>
-    <%= msg %>
+  <%= render 'layouts/navbar'%>
+  
+  <div class="container mt-3">
+    <% flash.each do |key, message| %>
+      <% alert_class = key == "notice" ? "alert-success" : "alert-danger" %>
+      <div class="alert <%= alert_class %> alert-dismissible fade show" role="alert">
+        <%= message %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% end %>
+    
+
   </div>
-<% end %>
     <%= yield %>
-    <%
-=begin%>
- <% if session[:user_id] %>
-      <%= link_to 'Выйти', logout_path, method: :delete %>
-    <% else %>
-      <%= link_to 'Войти через Google', '/auth/google_oauth2' %>
-    <% end %> 
-<%
-=end%>
   </body>
 </html>

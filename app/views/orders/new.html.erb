@@ -1,0 +1,25 @@
+<%= form_for @order do |f|%>
+  <div class="form-group mb-3">
+    <%= f.label :title %>
+    <%= f.text_field :title, required: true, class: "form-control", placeholder: "Type here" %>
+  </div>
+
+  <div class="form-group mb-3">
+    <%= f.label :description %>
+    <%= f.text_field :description, required: true, class: "form-control", placeholder: "Type here" %>
+  </div>
+
+  <div class="form-group mb-3">
+    <%= f.label :deadline %>
+    <%= f.date_field :deadline, required: true, class: "form-control", placeholder: "Type here" %>
+  </div>
+
+  <div class="form-group mb-3">
+    <%= f.label :file %> 
+    <%= f.file_field :file, required: true, accept: 'text/plain,application/msworld,application/vnd.openxmlformats-officedocument.wordprocessingml.document' %>
+  </div>
+
+  <div class="d-grid mt-4">
+    <%= f.submit "Submit order", class: "btn btn-primary" %>
+  </div>
+<%end%>
