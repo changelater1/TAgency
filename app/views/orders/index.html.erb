@@ -1,0 +1,42 @@
+<h1 class="my-4 text-center">All Orders</h1>
+
+<div class="table-responsive">
+  <table class="table table-bordered table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Status</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Deadline</th>
+        <th>Performer</th>
+        <th>Customer</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @orders.each do |order| %>
+        <tr>
+          <td><%= link_to order.id, order_path(order), class: 'text-decoration-none' %></td>
+          <td><%= order.status %></td>
+          <td><%= order.title %></td>
+          <td><%= order.description %></td>
+          <td><%= order.deadline.strftime('%Y-%m-%d %H:%M') if order.deadline %></td>
+          <td>
+            <% if order.performer_id %>
+              <%= link_to "Performer ##{order.performer_id}", profile_path(order.performer_id), class: 'text-decoration-none' %>
+            <% else %>
+              <span class="text-muted">Not assigned</span>
+            <% end %>
+          </td>
+          <td>
+            <% if order.customer_id %>
+              <%= link_to "Customer ##{order.customer_id}", profile_path(order.customer_id), class: 'text-decoration-none' %>
+            <% else %>
+              <span class="text-muted">Not assigned</span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

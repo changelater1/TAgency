@@ -1,8 +1,27 @@
-<h1>Hello, <%= @user.name%></h1>
+<main class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="col-md-6 col-lg-4">
+    <div class="card p-4 shadow-lg" style="background-color: #f8f9fa; border-radius: 12px;">
+      <h1 class="text-center mb-4">Hello, <%= @user.name %></h1>
 
-<p><strong>Name:</strong> <%= @user.name %></p>
-<p><strong>Email:</strong> <%= @user.email %></p>
-<p><strong>Phone:</strong> <%= @user.phone_number %></p>
-<p><strong>Country:</strong> <%= @user.country %></p>
+      <p><strong>Name:</strong> <%= @user.name %></p>
+      <p><strong>Email:</strong> <%= @user.email %></p>
+      <p><strong>Phone:</strong> <%= @user.phone_number %></p>
+      <p><strong>Country:</strong> <%= @user.country %></p>
+      <p><strong>Role:</strong> <%= @user.role%></p>
 
-<%= link_to "Edit", edit_profile_path(@user) %>
+
+      <div class="d-grid mt-4">
+        <%= link_to "Edit Profile", edit_profile_path(@user), class: "btn btn-primary" %>
+      </div>
+      <div class="d-grid mt-4">
+        <%= link_to "My Orders", my_profile_orders_path(@user), class: "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+</main>
+<h2>Orders</h2>
+<% @owned_orders.each do |order|%>
+  <p>
+  <%= order.title  %>
+  </p>
+<%end%>

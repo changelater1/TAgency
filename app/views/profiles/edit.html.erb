@@ -1,1 +1,61 @@
-<h1>Edit profile</h1>
+ <%
+=begin%>
+ <main class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="col-md-6 col-lg-4">
+    <h2 class="text-center">Edit Profile</h2>
+
+    <%= form_for @user, url: profile_path(@user), method: :patch do |f| %>
+      <div class="form-group mb-3">
+        <%= f.label :name %>
+        <%= f.text_field :name, class: "form-control", placeholder: "Enter your name" %>
+      </div>
+
+      <div class="form-group mb-3">
+        <%= f.label :phone_number %>
+        <%= f.text_field :phone_number, class: "form-control", placeholder: "Enter your phone number" %>
+      </div>
+
+      <div class="form-group mb-3">
+        <%= f.label :country %>
+        <%= f.text_field :country, class: "form-control", placeholder: "Enter your country" %>
+      </div>
+
+      <div class="d-grid mt-4">
+        <%= f.submit "Update Profile", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</main>  
+<%
+=end%>
+
+<main class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="col-md-6 col-lg-4">
+    <div class="card p-4 shadow-lg" style="background-color: #f8f9fa; border-radius: 12px;">
+      <h2 class="text-center mb-4">Edit Profile</h2>
+
+      <%= form_for @user, url: profile_path(@user), method: :patch do |f| %>
+        <div class="form-group mb-3">
+          <%= f.label :name %>
+          <%= f.text_field :name, class: "form-control", placeholder: "Enter your name" %>
+        </div>
+
+        <div class="form-group mb-3">
+          <%= f.label :phone_number %>
+          <%= f.text_field :phone_number, class: "form-control", placeholder: "Enter your phone number" %>
+        </div>
+
+        <div class="form-group mb-3">
+          <%= f.label :country %>
+          <%= f.text_field :country, class: "form-control", placeholder: "Enter your country" %>
+        </div>
+
+        <div class="d-grid mt-4">
+          <%= f.submit "Update Profile", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</main>
+
+

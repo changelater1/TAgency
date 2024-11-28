@@ -1,7 +1,12 @@
 class ProfilesController < ApplicationController
-  before_action :set_user, only: [ :update, :show]
+  before_action :set_user, only: [:update, :show]
   # Отображение профиля конкретного юзера
   def show
+    
+  end
+
+  def show_owned_orders
+    @owned_orders = current_user.owned_orders
   end
   #  Изменение данных профиля определенного юзера
   def edit
@@ -10,7 +15,7 @@ class ProfilesController < ApplicationController
   #  Обновление данных профиля определенного юзера
   def update
     if @user.update(user_params)
-      redirect_to @user, notice: "Your profile has been updated successfully"
+      redirect_to my_profile_path, notice: "Your profile has been updated successfully"
     else
       render :edit
     end
@@ -18,7 +23,10 @@ class ProfilesController < ApplicationController
 
   def my_profile
     @user = current_user
+    @owned_orders = current_user.owned_orders
   end
+
+  
 
   private
 
