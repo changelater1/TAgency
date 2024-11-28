@@ -5,7 +5,7 @@ class ProfilesController < ApplicationController
     
   end
 
-  def show_owned_orders
+  def owned_orders
     @owned_orders = current_user.owned_orders
   end
   #  Изменение данных профиля определенного юзера

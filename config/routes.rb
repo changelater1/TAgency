@@ -17,6 +17,6 @@ Rails.application.routes.draw do
   root 'home#index'
   get '/users/auth/:provider/callback', to: 'omniauth_callbacks#google_oauth2'
   get '/my_profile', to: 'profiles#my_profile'
-  get '/my_profile/orders', to: 'profiles#show_owned_orders'
+  get '/my_profile/orders', to: 'profiles#owned_orders'
   
 end
