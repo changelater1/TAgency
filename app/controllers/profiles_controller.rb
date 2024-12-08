@@ -6,7 +6,11 @@ class ProfilesController < ApplicationController
   end
 
   def owned_orders
-    @owned_orders = current_user.owned_orders
+    @orders = if current_user.user?
+                current_user.owned_orders
+              elsif current_user.translator?
+                current_user.given_orders 
+              end
   end
   #  Изменение данных профиля определенного юзера
   def edit

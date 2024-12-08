@@ -1,0 +1,5 @@
+:scheduler:
+  :schedule:
+    schedule_job:
+      every: '1d'   # Runs once per minute
+      class: ScheduleJob

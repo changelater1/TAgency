@@ -31,3 +31,7 @@
 
 en:
   hello: "Hello world"
+  switch_language: "Switch Language"
+  orders:
+    all: "All Orders"
+  

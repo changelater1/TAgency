@@ -1,42 +1,71 @@
 <div class="card shadow">
-    <div class="card-header bg-primary text-white">
-      <h1 class="card-title mb-0">Order Details</h1>
+  <div class="card-header bg-primary text-white">
+    <h1 class="card-title mb-0">Order Details</h1>
+  </div>
+  <div class="card-body">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <p><strong>ID:</strong> <%= @order.id %></p>
+        <p><strong>Status:</strong> <%= @order.status %></p>
+        <p><strong>Title:</strong> <%= @order.title %></p>
+      </div>
+      <div class="col-md-6">
+        <p><strong>Description:</strong> <%= @order.description %></p>
+        <p><strong>Deadline:</strong> <%= @order.deadline.strftime('%Y-%m-%d %H:%M') if @order.deadline %></p>
+      </div>
     </div>
-    <div class="card-body">
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <p><strong>ID:</strong> <%= @order.id %></p>
-          <p><strong>Status:</strong> <%= @order.status %></p>
-          <p><strong>Title:</strong> <%= @order.title %></p>
-        </div>
-        <div class="col-md-6">
-          <p><strong>Description:</strong> <%= @order.description %></p>
-          <p><strong>Deadline:</strong> <%= @order.deadline.strftime('%Y-%m-%d %H:%M') if @order.deadline %></p>
-        </div>
-      </div>
 
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <p><strong>Performer:</strong> <%= @order.performer_id %></p>
-        </div>
-        <div class="col-md-6">
-          <p><strong>Customer:</strong> <%= @order.customer_id %></p>
-        </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <p><strong>Performer:</strong> <%= @order.performer_id %></p>
       </div>
+      <div class="col-md-6">
+        <p><strong>Customer:</strong> <%= @order.customer_id %></p>
+      </div>
+    </div>
 
-      <h3 class="mt-4">Attached File</h3>
-      <% if @order.file.attached? %>
-        <p>
-          <a href="<%= rails_blob_path(@order.file, disposition: 'attachment') %>" class="btn btn-success">
-            Download <%= @order.file.filename %>
-          </a>
-        </p>
-      <% else %>
-        <p class="text-muted">No file attached.</p>
+    <h3 class="mt-4">Attached File</h3>
+    <% if @order.file.attached? %>
+      <p>
+        <a href="<%= rails_blob_path(@order.file, disposition: 'attachment') %>" class="btn btn-success">
+          Download <%= @order.file.filename %>
+        </a>
+      </p>
+    <% else %>
+      <p class="text-muted">No file attached.</p>
+    <% end %>
+    <div>
+    <% if current_user == @order.customer && @order.completed_file.attached? %>
+      <h3 class="mt-4">Completed File</h3>
+      <p>
+        <a href="<%= rails_blob_path(@order.completed_file, disposition: 'attachment') %>" class="btn btn-primary">
+          Download Completed File
+        </a>
+      </p>
+    <% elsif current_user == @order.customer %>
+      <p class="text-muted">The translated file is not available yet.</p>
+    <% end %>
+  </div>
+
+    <% if current_user.translator? %>
+      <% if @order.active? %>
+        <%= button_to 'Accept order', accept_order_path(@order), method: :patch, class: 'btn btn-primary' %>
+      <% elsif @order.in_progress? %>
+        <button id="complete-order-button" class="btn btn-success">Complete Order</button>
+
+        <div id="complete-order-form" style="display: none; margin-top: 15px;">
+          <%= form_with model: @order, url: complete_order_path(@order), method: :patch, local: true do |f| %>
+            <div class="mb-3">
+              <%= f.file_field :completed_file, class: "form-control" %>
+            </div>
+            <%= f.submit 'Submit', class: 'btn btn-success' %>
+          <% end %>
+        </div>
       <% end %>
-    </div>
-    <div class="card-footer text-end">
-      <%= link_to 'Back to All Orders', orders_path, class: 'btn btn-secondary' %>
-    </div>
+    <% end %>
+  </div>
+
+  <div class="card-footer text-end">
+    <%= link_to 'Back to All Orders', orders_path, class: 'btn btn-secondary' %>
   </div>
 </div>

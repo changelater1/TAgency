@@ -24,6 +24,15 @@ gem 'omniauth-rails_csrf_protection'
 
 gem 'byebug'
 
+gem 'aasm'
+
+gem 'font-awesome-sass'
+
+gem 'sidekiq'
+
+gem 'sidekiq-scheduler'
+
+
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
