@@ -1,0 +1,5 @@
+ru:
+  hello: "Привет мир"
+  switch_language: "Сменить язык"
+  orders:
+    all: "Все заказы"

@@ -83,4 +83,16 @@ Rails.application.configure do
     open_timeout:         5,
     read_timeout:         5 }
 
+    # adapter sidekiq for job
+
+ 
+  
+  config.active_job.queue_adapter = :sidekiq
+  
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  
+
+  
+
 end
