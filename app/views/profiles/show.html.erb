@@ -1,11 +1,54 @@
-<main class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-  <div class="col-md-6 col-lg-4">
-    <div class="card p-4 shadow-lg" style="background-color: #f8f9fa; border-radius: 12px;">
-    <p><strong>Name:</strong> <%= @user.name %></p>
-      <p><strong>Email:</strong> <%= @user.email %></p>
-      <p><strong>Phone:</strong> <%= @user.phone_number %></p>
-      <p><strong>Country:</strong> <%= @user.country %></p>
-      <p><strong>Role:</strong> <%= @user.role%></p>
+<main class="container" style="min-height: 100vh; padding-top: 50px;">
+  <!-- Профиль пользователя -->
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card p-4 shadow-lg" style="background-color: #f8f9fa; border-radius: 12px;">
+        <h3 class="text-center mb-4">Profile Information</h3>
+        <p><strong>Name:</strong> <%= @user.name %></p>
+        <p><strong>Email:</strong> <%= @user.email %></p>
+        <p><strong>Phone:</strong> <%= @user.phone_number %></p>
+        <p><strong>Country:</strong> <%= @user.country %></p>
+        <p><strong>Role:</strong> <%= @user.role %></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Отзывы -->
+  <div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+      <h3 class="text-center mb-4">Reviews</h3>
+      <% if @user.comments.any? %>
+        <div class="comments-list">
+          <% @user.comments.each do |comment| %>
+            <div class="card mb-3 shadow-sm">
+              <div class="card-body">
+                <strong class="text-primary"><%= comment.user.email %></strong>
+                <p class="mb-0"><%= comment.content %></p>
+                <small class="text-muted"><%= comment.created_at.strftime("%Y-%m-%d %H:%M") %></small>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-center text-muted">No reviews yet.</p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Добавить отзыв -->
+  <div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+      <h4 class="text-center mb-4">Add a Review</h4>
+      <div class="card p-4 shadow-sm">
+        <%= form_with model: [@user, Comment.new], url: profile_comments_path(@user), local: true do |form| %>
+          <div class="mb-3">
+            <%= form.text_area :content, class: 'form-control', rows: 3, placeholder: 'Write your review here...' %>
+          </div>
+          <div class="text-center">
+            <%= form.submit 'Post Review', class: 'btn btn-primary' %>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
 </main>
