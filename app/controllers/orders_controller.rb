@@ -46,6 +46,28 @@ class OrdersController < ApplicationController
     end
   end
 
+  def select_performer
+    @order = Order.find(params[:id])
+    @responded_translators = @order.responded_translators
+  
+    unless current_user == @order.customer
+      redirect_to orders_path, alert: 'You are not authorized to select a performer for this order.'
+    end
+  end
+  
+  def assign_performer
+    @order = Order.find(params[:id])
+    translator = User.find(params[:translator_id])
+  
+    if @order.customer == current_user && @order.responded_translators.include?(translator)
+      @order.update(performer: translator)
+      @order.start! # Transfer order status to "in_progress"
+      redirect_to @order, notice: 'Performer has been assigned successfully.'
+    else
+      redirect_to orders_path, alert: 'You cannot assign this performer.'
+    end
+  end
+
   private
 
   def order_params

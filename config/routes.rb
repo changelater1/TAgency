@@ -23,12 +23,17 @@ Rails.application.routes.draw do
   }
 
     resources :profiles, only: [:show, :edit, :update, :destroy] do
+      post 'comment', to: 'comments#profile_comment'
       collection do
         get :owned_orders
       end
     end
     resources :orders do
+      post 'comment', to: 'comments#order_comment'
+      resources :responses, only: [:create]
       member do
+        get :select_performer
+        patch :assign_performer
         patch :accept
         patch :complete
       end

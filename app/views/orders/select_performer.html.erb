@@ -1,0 +1,28 @@
+<div class="container mt-5">
+  <h1>Select a Performer for Order <%= @order.id %></h1>
+
+  <% if @responded_translators.any? %>
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Translator ID</th>
+          <th>Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @responded_translators.each do |translator| %>
+          <tr>
+            <td><%= link_to translator.id, profile_path(translator.id), class: 'text-decoration-none' %></td>
+            <td><%= translator.name %></td>
+            <td>
+              <%= button_to 'Assign as Performer', assign_performer_order_path(@order, translator_id: translator.id), method: :patch, class: 'btn btn-success' %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No translators have responded to this order yet.</p>
+  <% end %>
+</div>

@@ -3,56 +3,90 @@
     <h1 class="card-title mb-0">Order Details</h1>
   </div>
   <div class="card-body">
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <p><strong>ID:</strong> <%= @order.id %></p>
-        <p><strong>Status:</strong> <%= @order.status %></p>
-        <p><strong>Title:</strong> <%= @order.title %></p>
-      </div>
-      <div class="col-md-6">
-        <p><strong>Description:</strong> <%= @order.description %></p>
-        <p><strong>Deadline:</strong> <%= @order.deadline.strftime('%Y-%m-%d %H:%M') if @order.deadline %></p>
-      </div>
-    </div>
+    <h4 class="text-primary">General Information</h4>
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <th>ID:</th>
+          <td><%= @order.id %></td>
+        </tr>
+        <tr>
+          <th>Status:</th>
+          <td>
+            <span class="badge <%= @order.active? ? 'bg-success' : 'bg-secondary' %>">
+              <%= @order.status.capitalize %>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <th>Title:</th>
+          <td><%= @order.title %></td>
+        </tr>
+        <tr>
+          <th>Description:</th>
+          <td><%= @order.description %></td>
+        </tr>
+        <tr>
+          <th>Deadline:</th>
+          <td><%= @order.deadline.strftime('%Y-%m-%d %H:%M') if @order.deadline %></td>
+        </tr>
+      </tbody>
+    </table>
 
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <p><strong>Performer:</strong> <%= @order.performer_id %></p>
-      </div>
-      <div class="col-md-6">
-        <p><strong>Customer:</strong> <%= @order.customer_id %></p>
-      </div>
-    </div>
+    <h4 class="text-primary mt-4">Statistics</h4>
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <th>Performer:</th>
+          <td><%= @order.performer_id %></td>
+        </tr>
+        <tr>
+          <th>Customer:</th>
+          <td><%= @order.customer_id %></td>
+        </tr>
+        <tr>
+          <th>Symbols in File:</th>
+          <td><%= @order.symbols_count %></td>
+        </tr>
+        <tr>
+          <th>Words in File:</th>
+          <td><%= @order.words_count %></td>
+        </tr>
+        <tr>
+          <th>Symbols Without Spaces:</th>
+          <td><%= @order.symbols_count_without_spaces %></td>
+        </tr>
+      </tbody>
+    </table>
 
-    <h3 class="mt-4">Attached File</h3>
+    <h4 class="text-primary mt-4">Files</h4>
     <% if @order.file.attached? %>
-      <p>
+      <div class="mb-3">
         <a href="<%= rails_blob_path(@order.file, disposition: 'attachment') %>" class="btn btn-success">
-          Download <%= @order.file.filename %>
+          <i class="bi bi-download"></i> Download <%= @order.file.filename %>
         </a>
-      </p>
+      </div>
     <% else %>
       <p class="text-muted">No file attached.</p>
     <% end %>
-    <div>
-    <% if current_user == @order.customer && @order.completed_file.attached? %>
-      <h3 class="mt-4">Completed File</h3>
-      <p>
-        <a href="<%= rails_blob_path(@order.completed_file, disposition: 'attachment') %>" class="btn btn-primary">
-          Download Completed File
-        </a>
-      </p>
-    <% elsif current_user == @order.customer %>
-      <p class="text-muted">The translated file is not available yet.</p>
+
+    <% if current_user == @order.customer %>
+      <% if @order.completed_file.attached? %>
+        <div class="mb-3">
+          <a href="<%= rails_blob_path(@order.completed_file, disposition: 'attachment') %>" class="btn btn-primary">
+            <i class="bi bi-download"></i> Download Completed File
+          </a>
+        </div>
+      <% else %>
+        <p class="text-muted">The translated file is not available yet.</p>
+      <% end %>
     <% end %>
-  </div>
 
     <% if current_user.translator? %>
       <% if @order.active? %>
-        <%= button_to 'Accept order', accept_order_path(@order), method: :patch, class: 'btn btn-primary' %>
+        <%= button_to 'Apply to this order', order_responses_path(@order), method: :post, class: 'btn btn-primary'%>
       <% elsif @order.in_progress? %>
         <button id="complete-order-button" class="btn btn-success">Complete Order</button>
-
         <div id="complete-order-form" style="display: none; margin-top: 15px;">
           <%= form_with model: @order, url: complete_order_path(@order), method: :patch, local: true do |f| %>
             <div class="mb-3">
@@ -65,7 +99,42 @@
     <% end %>
   </div>
 
+  <h3 class="mt-4 text-primary">Order Comments</h3>
+  <div class="comments-section mt-3 mb-4">
+    <div class="card shadow">
+      <div class="card-body">
+        <% if @order.comments.any? %>
+          <% @order.comments.each do |comment| %>
+            <div class="comment mb-3 p-3" style="border: 1px solid #ddd; border-radius: 8px;">
+              <strong class="d-block text-dark"><%= comment.user.email %></strong>
+              <p class="text-muted mb-0"><%= comment.content %></p>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="text-muted">No comments yet. Be the first to comment!</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <h4 class="mt-4 text-primary">Add a Comment</h4>
+  <div class="card shadow mt-3">
+    <div class="card-body">
+      <%= form_with model: [@order, Comment.new], url: order_comment_path(@order), local: true do |form| %>
+        <div class="mb-3">
+          <%= form.text_area :content, class: 'form-control', rows: 3, placeholder: 'Add your comment here...' %>
+        </div>
+        <%= form.submit 'Post Comment', class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+  </div>
+
   <div class="card-footer text-end">
+    <% if current_user == @order.customer && @order.active? %>
+      <%= link_to 'View Possible Performers', select_performer_order_path(@order), class: 'btn btn-primary my-2'%>
+    <% elsif current_user == @order.customer && !@order.active? %>
+      <%= link_to 'View Assigned Performers', profile_path(@order.performer_id), class: 'btn btn-primary my-2' %>
+    <% end %>
     <%= link_to 'Back to All Orders', orders_path, class: 'btn btn-secondary' %>
   </div>
 </div>
