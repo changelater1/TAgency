@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_14_173756) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_18_201720) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,6 +42,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_14_173756) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.text "content"
+    t.bigint "user_id", null: false
+    t.string "commentable_type", null: false
+    t.bigint "commentable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
   create_table "orders", force: :cascade do |t|
     t.string "status"
     t.string "title"
@@ -51,6 +62,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_14_173756) do
     t.bigint "customer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "symbols_count"
+    t.integer "words_count"
+    t.integer "symbols_count_without_spaces"
+  end
+
+  create_table "responses", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_responses_on_order_id"
+    t.index ["user_id"], name: "index_responses_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -79,4 +102,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_14_173756) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "comments", "users"
+  add_foreign_key "responses", "orders"
+  add_foreign_key "responses", "users"
 end

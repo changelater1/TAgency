@@ -1,4 +1,4 @@
-<main class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+<main class="container d-flex flex-column align-items-center" style="min-height: 100vh;">
   <div class="col-md-6 col-lg-4">
     <div class="card p-4 shadow-lg" style="background-color: #f8f9fa; border-radius: 12px;">
       <h1 class="text-center mb-4">Hello, <%= @user.name %></h1>
@@ -7,17 +7,41 @@
       <p><strong>Email:</strong> <%= @user.email %></p>
       <p><strong>Phone:</strong> <%= @user.phone_number %></p>
       <p><strong>Country:</strong> <%= @user.country %></p>
-      <p><strong>Role:</strong> <%= @user.role%></p>
-
+      <p><strong>Role:</strong> <%= @user.role %></p>
 
       <div class="d-grid mt-4">
         <%= link_to "Edit Profile", edit_profile_path(@user), class: "btn btn-primary" %>
       </div>
       <% if current_user.role != 'translator' %>
         <div class="d-grid mt-4">
-          <%= link_to "My Orders", owned_orders_profiles_path, class: "btn btn-primary"  %>
+          <%= link_to "My Orders", owned_orders_profiles_path, class: "btn btn-primary" %>
         </div>
-      <%end%>
+      <% end %>
     </div>
   </div>
+
+  <section class="col-md-8 mt-5">
+    <div class="card shadow-lg" style="background-color: #ffffff; border-radius: 12px;">
+      <div class="card-header bg-primary text-white text-center">
+        <h3>Reviews</h3>
+      </div>
+      <div class="card-body">
+        <% if @user.comments.any? %>
+          <div class="comments-list">
+            <% @user.comments.each do |comment| %>
+              <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                  <strong class="text-primary"><%= comment.user.email %></strong>
+                  <p class="mb-0"><%= comment.content %></p>
+                  <small class="text-muted"><%= comment.created_at.strftime("%Y-%m-%d %H:%M") %></small>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-center text-muted">No reviews yet.</p>
+        <% end %>
+      </div>
+    </div>
+  </section>
 </main>
