@@ -116,11 +116,11 @@
       </div>
     </div>
   </div>
-  
+
   <h4 class="mt-4 text-primary">Add a Comment</h4>
   <div class="card shadow mt-3">
     <div class="card-body">
-      <%= form_with model: [@order, Comment.new], local: true do |form| %>
+      <%= form_with model: [@order, Comment.new], url: order_comment_path(@order), local: true do |form| %>
         <div class="mb-3">
           <%= form.text_area :content, class: 'form-control', rows: 3, placeholder: 'Add your comment here...' %>
         </div>
